@@ -103,11 +103,12 @@ erDiagram
         varchar rider_type
     }
     fact_payment {
-        int     payment_id PK
-        int     rider_id FK
-        int     date_key FK
-        decimal amount
-        int     rider_age_at_payment
+        int      payment_id PK
+        int      rider_id FK
+        int      date_key FK
+        date     payment_date
+        decimal  amount
+        int      rider_age_at_payment
     }
 ```
 
@@ -154,12 +155,31 @@ Conforms rides and payments onto the same grain so they can be compared without 
 
 | column | meaning |
 |---|---|
-| `rider_id`, `year_month`, `year`, `month` | grain |
+| `rider_id` | grain: the rider |
+| `month_date_key` | `yyyymm01` int, joins to `dim_date` on the first of the month |
+| `month_start_date` | first day of the month, as a date |
+| `year_month` | `yyyy-MM` label |
+| `year`, `quarter`, `month` | calendar parts, so the fact can be sliced without a join |
 | `rides_in_month` | count of trips started that month |
 | `ride_minutes_in_month` | total ride minutes that month |
+| `payments_in_month` | count of payments dated that month |
 | `amount_paid_in_month` | sum of payments dated that month |
 
 `agg_rider_spend_vs_rides` — grain: one row per rider. Rolls the monthly fact up to lifetime
 totals and computes `avg_rides_per_month`, plus a banding column so the answer to
 "how much money is spent per member based on how many rides they average per month" is a
 single `GROUP BY`.
+
+| column | meaning |
+|---|---|
+| `rider_id` | grain: the rider |
+| `rider_type`, `is_member` | carried from `dim_rider` so the rollup needs no join |
+| `age_at_account_start`, `age_band_at_account_start` | carried from `dim_rider` |
+| `first_active_month`, `last_active_month` | bounds of the observation window |
+| `months_observed` | months from first to last activity, inclusive — the denominator |
+| `months_active` | months in which the rider actually rode |
+| `total_rides`, `total_ride_minutes`, `total_paid` | lifetime totals |
+| `avg_rides_per_month` | `total_rides / months_observed` |
+| `avg_spend_per_month` | `total_paid / months_observed` — tenure-neutral |
+| `spend_per_ride` | `total_paid / total_rides` — the headline measure |
+| `rides_per_month_band` | banding of `avg_rides_per_month`, so the answer is one `GROUP BY` |

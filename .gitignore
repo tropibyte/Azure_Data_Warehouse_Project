@@ -1,5 +1,4 @@
 data/
-sql_configured/
 __pycache__/
 *.pyc
 local.env

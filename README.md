@@ -49,6 +49,9 @@ sql/transform/20..21_cetas_fact_*    Task 6 - fact tables via CETAS
 sql/transform/30..31_*               EXTRA CREDIT - rider-month fact + rider rollup
 sql/transform/40_validate_*          reconciliation: staging vs star
 sql/analysis/business_questions.sql  every business outcome, answered
+sql_configured/                      the same scripts with real storage names,
+                                     as actually run - read the LOAD scripts
+                                     against screenshots/01_*.png
 local/docker-compose.yml             local Postgres for offline rehearsal
 local/validate_with_duckdb.py        run the whole warehouse on your laptop
 tools/provision_azure.sh             create all Azure resources in one command
