@@ -55,6 +55,8 @@ sql_configured/                      the same scripts with real storage names,
 local/docker-compose.yml             local Postgres for offline rehearsal
 local/validate_with_duckdb.py        run the whole warehouse on your laptop
 tools/provision_azure.sh             create all Azure resources in one command
+tools/create_extract_pipeline.py     build + run the EXTRACT pipeline as code
+tools/run_sql.py                     run .sql against serverless via AAD token
 tools/configure.py                   stamp storage names into all SQL at once
 docs/star_schema.md                  schema design + rubric traceability
 docs/star_schema.png                 rendered star schema diagram
@@ -137,9 +139,15 @@ this before you need it, not while the lab clock is running.
 
 ### 2. Extract to Blob Storage (Task 4)
 
-Synapse Studio → **Integrate** → **Copy Data tool** → one-time run, source =
-your Azure Database for PostgreSQL, select all four tables, sink = your ADLS
-Gen2 container, format = DelimitedText.
+Either the wizard — Synapse Studio → **Integrate** → **Copy Data tool** →
+one-time run, source = your Azure Database for PostgreSQL, all four tables,
+sink = your ADLS Gen2 container, format = DelimitedText — or as code:
+
+```bash
+python tools/create_extract_pipeline.py --workspace <ws> --resource-group <rg>     --pg-server <pg> --pg-user <user> --storage <acct> --filesystem <fs> --run
+```
+
+Both produce the same four files at the same paths.
 
 **Screenshot the container now** — four files named `public.rider.txt`,
 `public.payment.txt`, `public.station.txt`, `public.trip.txt`. That is the
