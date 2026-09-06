@@ -140,8 +140,9 @@ DelimitedText. Evidence: `screenshots/01_blob_storage_four_files.png`.
 
 ### LOAD — external staging tables
 
-Four `CREATE EXTERNAL TABLE` scripts (`sql/load/02` – `05`). Three deliberate
-choices:
+Four `CREATE EXTERNAL TABLE` scripts — `sql_configured/load/02` – `05` as run,
+with `LOCATION` naming the same four files the extract screenshot shows;
+`sql/load/02` – `05` are the reusable templates. Three deliberate choices:
 
 **Dates and timestamps stage as `VARCHAR`.** A `datetime2` external column fails
 the *entire file* on a single unparseable row, with no indication of which row.
@@ -342,7 +343,9 @@ docs/findings.md              full results for every business outcome
 docs/lab_runbook.md           step-by-step Azure session guide
 sql/load/00                   CREATE DATABASE (serverless has only master)
 sql/load/01                   external data source + file formats
-sql/load/02..05               four CREATE EXTERNAL TABLE scripts
+sql/load/02..05               four CREATE EXTERNAL TABLE scripts (templates)
+sql_configured/               the same scripts as actually run, storage names
+                              resolved - read load/02..05 against screenshot 01
 sql/transform/10..13          dimension CETAS
 sql/transform/20..21          fact CETAS
 sql/transform/30..31          extra credit CETAS
@@ -380,7 +383,7 @@ Synapse build.
 | Trip dimensions: riders, stations, dates | `dim_rider`, `dim_station` (role-played twice), `dim_date`, plus `dim_time` |
 | Payment dimensions: dates, riders | `dim_date`, `dim_rider` |
 | Extract screenshot — 4 text files in Blob Storage | `screenshots/01_blob_storage_four_files.png` |
-| 4 scripts using `CREATE EXTERNAL TABLE` | `sql/load/02` – `05` |
+| 4 scripts using `CREATE EXTERNAL TABLE` | `sql_configured/load/02` – `05` (stamped, `LOCATION` matches the screenshot) — templates in `sql/load/02` – `05` |
 | Fact CETAS with appropriate dimension keys | `sql/transform/20`, `21` |
 | Dimension CETAS matching the diagram, no facts | `sql/transform/10` – `13` |
 | Extra credit | `sql/transform/30`, `31`; final queries in `sql/analysis/business_questions.sql` |

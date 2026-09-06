@@ -239,8 +239,8 @@ if you want to match it exactly.
 | Payment fact has payment amount | `fact_payment.amount` |
 | Trip dimensions: riders, stations, dates | `dim_rider`, `dim_station` (role-played twice), `dim_date` (+ `dim_time`) |
 | Payment dimensions: dates, riders | `dim_date`, `dim_rider` |
-| Extract screenshot: 4 text files in Blob Storage | `screenshots/` — capture during Task 4 |
-| 4 script files using `CREATE EXTERNAL TABLE` | `sql/load/02..05` |
+| Extract screenshot: 4 text files in Blob Storage | `screenshots/01_blob_storage_four_files.png` |
+| 4 script files using `CREATE EXTERNAL TABLE` | `sql_configured/load/02..05` (stamped, paths match the screenshot) — templates in `sql/load/02..05` |
 | Fact CETAS with appropriate dimension keys | `sql/transform/20`, `21` |
 | Dimension CETAS matching the diagram, no facts | `sql/transform/10..13` |
 | **Extra credit** — spend per member by avg rides/month | `sql/transform/30`, `31`; query at the end of `sql/analysis/business_questions.sql` |
