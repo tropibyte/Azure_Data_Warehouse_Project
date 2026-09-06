@@ -1,0 +1,16 @@
+# Local rehearsal Postgres. Lets you prove the EXTRACT source is correct
+# without burning one of your 10 Udacity lab attempts.
+#   docker compose -f local/docker-compose.yml up -d
+#   python starter/ProjectDataToPostgres.py --local
+services:
+  postgres:
+    image: postgres:16
+    container_name: divvy-postgres
+    environment:
+      POSTGRES_PASSWORD: divvy
+      POSTGRES_DB: postgres
+    ports:
+      - "5432:5432"
+    tmpfs:
+      # tmpfs keeps DDL fast under WSL2 -- the four CREATE/COPY rounds otherwise crawl
+      - /var/lib/postgresql/data
